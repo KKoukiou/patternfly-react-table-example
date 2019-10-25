@@ -1,91 +1,33 @@
 import React from 'react';
 import {
-  Table,
-  TableHeader,
-  TableBody,
-  sortable,
-  SortByDirection,
-  headerCol,
-  TableVariant,
-  expandable,
-  cellWidth
-} from '@patternfly/react-table';
+  Title,
+  Button,
+  EmptyState,
+  EmptyStateVariant,
+  EmptyStateIcon,
+  EmptyStateBody,
+  EmptyStateSecondaryActions
+} from '@patternfly/react-core';
+import { CubesIcon } from '@patternfly/react-icons';
 
-export class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      columns: [
-        {
-          title: 'Header cell',
-          cellFormatters: [expandable]
-        },
-        'Branches',
-        { title: 'Pull requests' },
-        '' // deliberately empty
-      ],
-      rows: [
-        {
-          cells: ['one', 'two', 'three', 'four']
-        },
-        {
-          isOpen: true,
-          cells: ['parent - 1', 'two', 'three', 'four']
-        },
-        {
-          parent: 1,
-          fullWidth: true,
-          cells: ['child - 1']
-        },
-        {
-          isOpen: false,
-          cells: ['parent - 2', 'two', 'three', 'four']
-        },
-        {
-          parent: 3,
-          cells: ['child - 2']
-        },
-        {
-          isOpen: false,
-          cells: ['parent - 3', 'two', 'three', 'four']
-        },
-        {
-          parent: 5,
-          fullWidth: true,
-          noPadding: true,
-          cells: ['child - 3']
-        }
-      ]
-    };
-    this.onCollapse = this.onCollapse.bind(this);
-  }
-
-  onCollapse(event, rowKey, isOpen) {
-    const { rows } = this.state;
-    /**
-     * Please do not use rowKey as row index for more complex tables.
-     * Rather use some kind of identifier like ID passed with each row.
-     */
-    rows[rowKey].isOpen = isOpen;
-    this.setState({
-      rows
-    });
-  }
-
-  render() {
-    const { columns, rows } = this.state;
-
-    return (
-      <Table
-        caption="Compact expandable table"
-        variant={TableVariant.compact}
-        onCollapse={this.onCollapse}
-        rows={rows}
-        cells={columns}
-      >
-        <TableHeader />
-        <TableBody />
-      </Table>
-    );
-  }
-}
+export const App = () => (
+  <EmptyState variant={EmptyStateVariant.full}>
+    <EmptyStateIcon icon={CubesIcon} />
+    <Title headingLevel="h5" size="lg">
+      Empty State
+    </Title>
+    <EmptyStateBody>
+      This represents an the empty state pattern in Patternfly 4. Hopefully it's simple enough to use but flexible
+      enough to meet a variety of needs.
+    </EmptyStateBody>
+    <Button variant="primary">Primary Action</Button>
+    <EmptyStateSecondaryActions>
+      <Button variant="link">Multiple</Button>
+      <Button variant="link">Action Buttons</Button>
+      <Button variant="link">Can</Button>
+      <Button variant="link">Go here</Button>
+      <Button variant="link">In the secondary</Button>
+      <Button variant="link">Action area</Button>
+    </EmptyStateSecondaryActions>
+  </EmptyState>
+);
