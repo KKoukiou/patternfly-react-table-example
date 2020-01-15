@@ -1,33 +1,120 @@
 import React from 'react';
 import {
-  Title,
-  Button,
-  EmptyState,
-  EmptyStateVariant,
-  EmptyStateIcon,
-  EmptyStateBody,
-  EmptyStateSecondaryActions
+    Dropdown,
+    DropdownToggle,
+    DropdownToggleAction,
+    DropdownItem,
+    DropdownItemIcon,
+    DropdownSeparator,
+    DropdownPosition,
+    DropdownDirection,
+    KebabToggle
 } from '@patternfly/react-core';
-import { CubesIcon } from '@patternfly/react-icons';
+import { ThIcon, CogIcon, BellIcon, CubesIcon } from '@patternfly/react-icons';
 
-export const App = () => (
-  <EmptyState variant={EmptyStateVariant.full}>
-    <EmptyStateIcon icon={CubesIcon} />
-    <Title headingLevel="h5" size="lg">
-      Empty State
-    </Title>
-    <EmptyStateBody>
-      This represents an the empty state pattern in Patternfly 4. Hopefully it's simple enough to use but flexible
-      enough to meet a variety of needs.
-    </EmptyStateBody>
-    <Button variant="primary">Primary Action</Button>
-    <EmptyStateSecondaryActions>
-      <Button variant="link">Multiple</Button>
-      <Button variant="link">Action Buttons</Button>
-      <Button variant="link">Can</Button>
-      <Button variant="link">Go here</Button>
-      <Button variant="link">In the secondary</Button>
-      <Button variant="link">Action area</Button>
-    </EmptyStateSecondaryActions>
-  </EmptyState>
-);
+export class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isActionOpen: false,
+            isCogOpen: false
+        };
+        this.onActionToggle = isActionOpen => {
+            this.setState({
+                isActionOpen
+            });
+        };
+        this.onCogToggle = isCogOpen => {
+            this.setState({
+                isCogOpen
+            });
+        };
+        this.onActionClick = event => {
+            console.log('Action clicked!');
+        };
+        this.onCogClick = event => {
+            console.log('Cog clicked!');
+        };
+        this.onActionSelect = event => {
+            this.setState({
+                isActionOpen: !this.state.isActionOpen
+            });
+        };
+        this.onCogSelect = event => {
+            this.setState({
+                isCogOpen: !this.state.isCogOpen
+            });
+        };
+    }
+
+    render() {
+        const { isActionOpen, isCogOpen } = this.state;
+        const dropdownItems = [
+        <DropdownItem key="action" component="button">
+            Action
+        </DropdownItem>,
+        <DropdownItem key="disabled link" component="button" isDisabled>
+            Disabled action
+        </DropdownItem>,
+        <DropdownItem key="other action" component="button">
+            Other action
+        </DropdownItem>
+        ];
+        const dropdownIconItems = [
+        <DropdownItem key="action" component="button" variant="icon">
+            <DropdownItemIcon>
+                <CogIcon />
+            </DropdownItemIcon>
+            Action
+        </DropdownItem>,
+        <DropdownItem key="disabled link" component="button" variant="icon" isDisabled>
+            <DropdownItemIcon>
+                <BellIcon />
+            </DropdownItemIcon>
+            Disabled action
+        </DropdownItem>,
+        <DropdownItem key="other action" component="button" variant="icon">
+            <DropdownItemIcon>
+                <CubesIcon />
+            </DropdownItemIcon>
+            Other action
+        </DropdownItem>
+        ];
+        return (
+            <React.Fragment>
+                <Dropdown
+                    onSelect={this.onActionSelect}
+                    toggle={
+                        <DropdownToggle
+                            splitButtonItems={[
+                            <DropdownToggleAction key="action" onClick={this.onActionClick}>
+                                Action
+                            </DropdownToggleAction>
+                            ]}
+                            splitButtonVariant="action"
+                            onToggle={this.onActionToggle}
+                        />
+                    }
+                    isOpen={isActionOpen}
+                    dropdownItems={dropdownItems}
+                />{' '}
+                <Dropdown
+                    onSelect={this.onCogSelect}
+                    toggle={
+                        <DropdownToggle
+                            splitButtonItems={[
+                            <DropdownToggleAction key="cog-action" aria-label="Action" onClick={this.onCogClick}>
+                                <CogIcon />
+                            </DropdownToggleAction>
+                            ]}
+                            splitButtonVariant="action"
+                            onToggle={this.onCogToggle}
+                        />
+                    }
+                    isOpen={isCogOpen}
+                    dropdownItems={dropdownIconItems}
+                />
+            </React.Fragment>
+        );
+    }
+}
